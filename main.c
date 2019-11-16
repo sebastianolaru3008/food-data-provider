@@ -30,7 +30,7 @@ int main() {
     char ***specificFood = (char ***) malloc(noOfFoodTypes * sizeof(char **));
     for (int i = 0; i < noOfFoodTypes; ++i) {
         //read no of specific food
-        printf("Please input no of speciffic foods for food \"%s\"\n", foodTypes[i]);
+        printf("\nPlease input no of speciffic foods for food \"%s\"\n", foodTypes[i]);
         scanf("%d", &noOfSpecificFood[i]);
         fflush(stdin);
 
@@ -47,7 +47,7 @@ int main() {
 
     //read no of drinks
     int noOfDrinks;
-    printf("Please input no of drinks\n");
+    printf("\nPlease input no of drinks\n");
     scanf("%d",&noOfDrinks);
     fflush(stdin);
 
