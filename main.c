@@ -5,7 +5,7 @@
 #define MAX_DRINK_NAME 20
 #define MAX_SPECIFIC_FOOD_NAME 20
 
-void readNameAndPrice(char* food, double *price);
+void readNameAndPrice(char *food, double *price);
 
 int main() {
 
@@ -38,35 +38,36 @@ int main() {
         specificFood[i] = (char **) malloc(noOfSpecificFood[i] * sizeof(char *));
         foodPrices[i] = (double *) malloc(noOfSpecificFood[i] * sizeof(double));
 
-        printf("Please input \"%s\" speciffic foods &prices: each line in the format <speciffic food> (price):\n",foodTypes[i]);
+        printf("Please input \"%s\" speciffic foods &prices: each line in the format <speciffic food> (price):\n",
+               foodTypes[i]);
         for (int j = 0; j < noOfSpecificFood[i]; ++j) {
-            specificFood[i][j] = (char*) malloc(MAX_SPECIFIC_FOOD_NAME* sizeof(char));
-            readNameAndPrice(specificFood[i][j],&foodPrices[i][j]);
+            specificFood[i][j] = (char *) malloc(MAX_SPECIFIC_FOOD_NAME * sizeof(char));
+            readNameAndPrice(specificFood[i][j], &foodPrices[i][j]);
         }
     }
 
     //read no of drinks
     int noOfDrinks;
     printf("\nPlease input no of drinks\n");
-    scanf("%d",&noOfDrinks);
+    scanf("%d", &noOfDrinks);
     fflush(stdin);
 
     //read drinks and their prices
-    double * drinkPrice = (double*) malloc( noOfDrinks* sizeof(double));
-    char ** drinks = (char**) malloc( noOfDrinks* sizeof(char *));
+    double *drinkPrice = (double *) malloc(noOfDrinks * sizeof(double));
+    char **drinks = (char **) malloc(noOfDrinks * sizeof(char *));
     printf("Please input the drinks: each line in the format <drink> (price):\n");
     for (int i = 0; i < noOfDrinks; ++i) {
-        drinks[i] = (char *)malloc(MAX_DRINK_NAME* sizeof(char));
-        readNameAndPrice(drinks[i],&drinkPrice[i]);
+        drinks[i] = (char *) malloc(MAX_DRINK_NAME * sizeof(char));
+        readNameAndPrice(drinks[i], &drinkPrice[i]);
     }
 
     //food data printing
     printf("The food data is:\n");
-    for(int i=0;i<noOfFoodTypes;i++) {
+    for (int i = 0; i < noOfFoodTypes; i++) {
         // display food classified by food type
         printf("%s: ", foodTypes[i]);
-        for(int j=0;j<noOfSpecificFood[i];j++) {
-            printf("(%s - %.2lf) ",specificFood[i][j],foodPrices[i][j]);
+        for (int j = 0; j < noOfSpecificFood[i]; j++) {
+            printf("(%s - %.2lf) ", specificFood[i][j], foodPrices[i][j]);
         }
         printf("\n");
     }
@@ -74,21 +75,43 @@ int main() {
     //drink data printing
     printf("The drinks data is:\n");
     printf("drinks: ");
-    for(int i=0;i<noOfDrinks;i++) {
+    for (int i = 0; i < noOfDrinks; i++) {
         // display food classified by food type
-        if(i!=(noOfDrinks-1))
-            printf("%s, ",drinks[i]);
+        if (i != (noOfDrinks - 1))
+            printf("%s, ", drinks[i]);
         else
-            printf("%s ",drinks[i]);
+            printf("%s ", drinks[i]);
     }
     printf("\nprices: ");
-    for(int i=0;i<noOfDrinks;i++) {
+    for (int i = 0; i < noOfDrinks; i++) {
         // display food classified by food type
-        if(i!=(noOfDrinks-1))
-            printf("%.0lf, ",drinkPrice[i]);
+        if (i != (noOfDrinks - 1))
+            printf("%.0lf, ", drinkPrice[i]);
         else
-            printf("%.0lf ",drinkPrice[i]);
+            printf("%.0lf ", drinkPrice[i]);
     }
+
+    //save data into file
+    FILE *f;
+    f = fopen("data.txt", "w");
+    fprintf(f, "%d:\n", noOfFoodTypes);
+    for (int i = 0; i < noOfFoodTypes; i++) {
+        fprintf(f, "%s: ", foodTypes[i]);
+        for (int j = 0; j < noOfSpecificFood[i]; j++) {
+            fprintf(f, "(%s - %.2lf)", specificFood[i][j], foodPrices[i][j]);
+            if (j == noOfSpecificFood[i] - 1)
+                fprintf(f, "\n");
+            else
+                fprintf(f, " ");
+        }
+    }
+    fprintf(f, "%d:\n", noOfDrinks);
+    for (int i = 0; i < noOfDrinks; i++) {
+        fprintf(f, "(%s - %.0lf)", drinks[i], drinkPrice[i]);
+        if (i != noOfDrinks - 1)
+            fprintf(f, ", ");
+    }
+    fclose(f);
 
     //deallocate food memory
     for (int i = 0; i < noOfFoodTypes; ++i) {
@@ -114,16 +137,16 @@ int main() {
     return 0;
 }
 
-void readNameAndPrice(char* food, double *price){
+void readNameAndPrice(char *food, double *price) {
     char c = getchar();
-    int i=0;
-    while(c!='(') {
+    int i = 0;
+    while (c != '(') {
         food[i] = c;
         c = getchar();
         i++;
     }
-    food[i-1] = '\0';
-    scanf("%lf",price);
+    food[i - 1] = '\0';
+    scanf("%lf", price);
     fflush(stdin);
 }
 
